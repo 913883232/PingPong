@@ -9,6 +9,8 @@ public class GameManager : Singleton<GameManager> {
     private Transform player;
     [SerializeField]
     private CanvasGroup Win;
+    [SerializeField]
+    private CanvasGroup Over;
     public Transform Player { get { return player; } }
     public int Score { get; set; }
 
@@ -18,7 +20,6 @@ public class GameManager : Singleton<GameManager> {
         {
             return life;
         }
-
         set
         {
             life = value;
@@ -28,13 +29,14 @@ public class GameManager : Singleton<GameManager> {
             }
         }
     }
-
     private void GameOver()
     {
-        print("GamaOver!");
+        Over.alpha = 1;
+        Time.timeScale = 0;
     }
     public void GameWin()
     {
         Win.alpha = 1;
+        Time.timeScale = 0;
     }
 }
