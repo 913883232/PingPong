@@ -9,7 +9,7 @@ public class MainPlayer : MonoBehaviour
     private float speed;
     private Transform trans;
     private Vector3 leftPoint, rightPoint;
-    private Collider2D coll2D;
+    private BoxCollider2D coll2D;
     [SerializeField]
     private LayerMask layerMask;
     public Vector3 CurrentSpeed { get; private set; }
@@ -18,7 +18,7 @@ public class MainPlayer : MonoBehaviour
     private void Awake()
     {
         trans = GetComponent<Transform>();
-        coll2D = GetComponent<Collider2D>();
+        coll2D = GetComponent<BoxCollider2D>();
     }
     private void Start()
     {
@@ -28,9 +28,9 @@ public class MainPlayer : MonoBehaviour
     }
     void Update()
     {
-        RaycastHit2D resultLeft = Physics2D.Raycast(trans.position + leftPoint, Vector2.left, 0.05f, layerMask);
-        RaycastHit2D resultRight = Physics2D.Raycast(trans.position + rightPoint, Vector2.right, 0.05f,layerMask);
-        directionX = Input.GetAxis("Horizontal");
+        RaycastHit2D resultLeft = Physics2D.Raycast(trans.position + leftPoint, Vector2.left, 0.01f, layerMask);
+        RaycastHit2D resultRight = Physics2D.Raycast(trans.position + rightPoint, Vector2.right, 0.01f,layerMask);
+        directionX = Input.GetAxisRaw("Horizontal");
         if (resultLeft.collider == null && directionX < 0)
         {
             this.trans.transform.position += new Vector3(directionX * Time.deltaTime * speed, 0, 0);

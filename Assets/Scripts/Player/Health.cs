@@ -24,7 +24,7 @@ public class Health : MonoBehaviour,ICanTakeDamage
 	void Start () {
         CurrentHealth = InitialHealth;
 	}
-    private void DestroySelf()
+    public void DestroySelf()
     {
         if (destroyEvent != null)
         {
