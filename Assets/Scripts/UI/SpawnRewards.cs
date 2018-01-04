@@ -6,15 +6,15 @@ public class SpawnRewards : MonoBehaviour {
     [SerializeField]
     private float repeatRate;
     [SerializeField]
-    private GameObject blockRewardOBJ;
-    private GameObject a;
+    private SpawnReward[] spawnReward;
 	void Start () {
         InvokeRepeating("Creat", 0f, repeatRate);
 	}
 	
 	private void Creat()
     {
-        a = Instantiate(blockRewardOBJ,new Vector2(Random.Range(-2f, 3f), Random.Range(-1f, 6f)), Quaternion.identity);
-        Destroy(a, repeatRate);
+        int index = Random.Range(0, spawnReward.Length);
+        if (spawnReward.Length > 0)
+        Instantiate(spawnReward[index],new Vector2(Random.Range(-2f, 3f), Random.Range(-1f, 6f)), Quaternion.identity);
     }
 }

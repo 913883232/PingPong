@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager> {
     private CanvasGroup Win;
     [SerializeField]
     private CanvasGroup Over;
+    public LevelDirector currentDirector;
     public Transform Player { get { return player; } }
     public int Score { get; set; }
 
