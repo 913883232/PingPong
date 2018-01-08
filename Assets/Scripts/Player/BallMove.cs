@@ -47,9 +47,9 @@ public class BallMove : MonoBehaviour {
     private void Start()
     {
         currentPingPongData = pingPongInitData;
-        playerTrans = GameManager.Instance.Player;
+        playerTrans = GameManager.Instance.Player.transform;
         playerRacket = playerTrans.GetComponent<MainPlayer>();
-        relativePosition = trans.position - playerTrans.transform.position;
+        relativePosition = trans.position - playerTrans.position;
         currentDirection = (playerRacket.CurrentSpeed.normalized + Vector3.up).normalized;
 
         stateMachine = new StateMachine<PlayerState>();
@@ -64,7 +64,7 @@ public class BallMove : MonoBehaviour {
     void Update()
     {
         stateMachine.Update();
-        if (stateMachine.CurrentState == PlayerState.Idel && Input.GetKeyDown(KeyCode.Space))
+        if (stateMachine.CurrentState == PlayerState.Idel && Input.touchCount>0)//.GetKeyDown(KeyCode.Space))
         {
             stateMachine.CurrentState = PlayerState.Run;
         }

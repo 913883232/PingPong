@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelDirector : MonoBehaviour {
+public abstract class LevelDirector : MonoBehaviour {
     [SerializeField]
     private SpawnRewards rewardSpawner;
     [SerializeField]
     private DotLine dotLine;
     public DotLine DotLine { get { return dotLine; } }
+    [SerializeField]
+    protected MainPlayer playerPrefab;
 	void Start () {
 		
 	}
-	
-	void Update () {
-		
-	}
+
+    public abstract void Decorate();
 }
