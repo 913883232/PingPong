@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System;
+using UnityEngine.UI;
 
 #region Types
 public enum PlayerState
@@ -43,14 +44,14 @@ public class BallMove : MonoBehaviour {
         coll2D = GetComponent<BoxCollider2D>();
         rig2D = GetComponent<Rigidbody2D>();
         trail = GetComponent<TrailRenderer>();
+        EventService.Instance.GetEvent<PlayerRunEvent>().Subscribe(Run);
     }
     private void Start()
     {
         currentPingPongData = pingPongInitData;
-        playerTrans = GameManager.Instance.Player.transform;
+        playerTrans = GameManager.Instance.CurrentDirector.InitRacket.transform;
         playerRacket = playerTrans.GetComponent<MainPlayer>();
         relativePosition = trans.position - playerTrans.position;
-        currentDirection = (playerRacket.CurrentSpeed.normalized + Vector3.up).normalized;
 
         stateMachine = new StateMachine<PlayerState>();
         stateMachine.AddState(
@@ -59,22 +60,22 @@ public class BallMove : MonoBehaviour {
         stateMachine.AddState(
             PlayerState.Run,
             () => { trail.enabled = true; });
-        stateMachine.CurrentState = PlayerState.Idel;
+        stateMachine.CurrentState = pingPongInitData.state;
     }
     void Update()
     {
         stateMachine.Update();
-        if (stateMachine.CurrentState == PlayerState.Idel && Input.touchCount>0)//.GetKeyDown(KeyCode.Space))
-        {
-            stateMachine.CurrentState = PlayerState.Run;
-        }
-        else if (stateMachine.CurrentState == PlayerState.Idel)
+        if (stateMachine.CurrentState == PlayerState.Idel)
         {
             currentDirection = (playerRacket.CurrentSpeed.normalized + Vector3.up).normalized;
             trans.position = relativePosition + playerTrans.transform.position;
             return;
         }
         ReflexLine2();
+    }
+    private void Run()
+    {
+        stateMachine.CurrentState = PlayerState.Run;
     }
     private void FixedUpdate()
     {
@@ -104,6 +105,10 @@ public class BallMove : MonoBehaviour {
     public void DestroySelf()
     {
         GameManager.Instance.Life -= 1;
+        if (GameManager.Instance.Life > 0)
+        {
+            GameManager.Instance.PlayerDeadEvent();
+        }
         ResetPingPongData();
     }
     public void ResetPingPongData()

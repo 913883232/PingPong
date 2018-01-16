@@ -25,7 +25,6 @@ public class BlockerControl : MonoBehaviour {
                 blockAmount++;
             }
         }
-        print(blockAmount);
     }
     public void WinThisRound()
     {

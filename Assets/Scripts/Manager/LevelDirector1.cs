@@ -6,16 +6,10 @@ using UnityEngine;
 public class LevelDirector1 : LevelDirector {
     [SerializeField]
     private Vector3 playerDownPos;
-    [SerializeField]
-    private BallMove ball;
-    [SerializeField]
-    private GameObject topWall;
     public override void Decorate()
     {
-        Instantiate(topWall);
-        InputManager inputManager = InputManager.Instance;
-        GameManager.Instance.Player = Instantiate(playerPrefab, playerDownPos, Quaternion.identity);
-        GameManager.Instance.Ball = Instantiate(ball, ball.transform.position, Quaternion.identity);
-        inputManager.playerDown = GameManager.Instance.Player;
+        downRacket = Instantiate(playerPrefab, playerDownPos, Quaternion.identity);
+        initRacket = downRacket;
+        Instantiate(ballPrefab, playerDownPos + new Vector3(0.22f, 0.22f, 0), Quaternion.identity);
     }
 }

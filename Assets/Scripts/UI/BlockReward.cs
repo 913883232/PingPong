@@ -8,7 +8,7 @@ public class BlockReward : SpawnReward {
         if (collision.CompareTag("Player"))
         {
             myColl.enabled = false;
-            GameManager.Instance.currentDirector.DotLine.SetDotLine();
+            GameManager.Instance.CurrentDirector.DotLine.SetDotLine();
             Destroy(this.gameObject);
         }
     }

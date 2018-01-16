@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InputManager : Singleton<InputManager> {
     [SerializeField]
@@ -8,14 +9,29 @@ public class InputManager : Singleton<InputManager> {
     private Touch[] touch;
     public MainPlayer playerUp;
     public MainPlayer playerDown;
-	void Start () {
-		
-	}
-	
-	void Update () {
+    protected override void Awake()
+    {
+        base.Awake();
+        EventService.Instance.GetEvent<PlayerCtrlActiveEvent>().Subscribe(GameStart);
+    }
+    private void GameStart()
+    {
+        playerUp = GameManager.Instance.CurrentDirector.UpRacket;
+        playerDown = GameManager.Instance.CurrentDirector.DownRacket;
+    }
+
+    void Update () {
         foreach (Touch touch in Input.touches)
         {
-            if (playerUp && rectUp.Contains(Camera.main.ScreenToWorldPoint(touch.position)))
+            if (!GameManager.Instance.GameActived && touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+            {
+                GameManager.Instance.GameActiveEvent();
+            }
+            if (GameManager.Instance.GameActived && !GameManager.Instance.PlayerActived && touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+            {
+                GameManager.Instance.playerReGoEvent();
+            }
+            else if (playerUp && rectUp.Contains(Camera.main.ScreenToWorldPoint(touch.position)))
             {
                 if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
                 {
